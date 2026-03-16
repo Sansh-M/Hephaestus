@@ -2,19 +2,17 @@
 #include <vector>
 #include "constants.hpp"
 
-
+/*
+Entity class, used to 
+*/
 class Entity {
 	public:
-		Entity(Vec3& origin, float mass) 
+		Entity(const Vec3& origin, float mass) 
 			: origin(origin), mass(mass) {}
 
 		std::vector<float> grav_Effect(std::vector<float>& position) {
 			
 		}	
-
-		int atmos_effect() {
-			return 0;
-		}
 
 		Vec3 get_pos() {
 			return origin;
