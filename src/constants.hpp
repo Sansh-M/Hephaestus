@@ -1,6 +1,6 @@
 #include <iostream>
 #include <vector>
-
+#pragma once
 
 namespace Physics {
 	// physics constants
