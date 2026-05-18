@@ -1,0 +1,20 @@
+{
+  "scene_name": "std solar system",
+  "planets": [
+    {
+      "name": "Sun",
+      "origin": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "mass": 1.989e30,
+      "radius": 696000000,
+      "atmospheric_density": 
+    }
+  ],
+
+  "characters"
+
+
+}

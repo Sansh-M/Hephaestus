@@ -4,9 +4,12 @@
 
 namespace Physics {
 	// physics constants
+	// ------------mechanics constants----------------- 
 	constexpr float GRAVITY = 9.81f; // m/s^2
 	constexpr float GRAV_CONST = 6.67430e-11f; // m^3 kg^-1 s^-2
 	constexpr int LIGHT_SPEED = 299792458; // m s^-1
+	//-------------atmospheric constants---------------
+	constexpr float UNIVERSAL_GAS_CONSTANT = 8.314f; //J/mol*K
 }
 struct Vec3 { float x,y,z; 
 	void add(Vec3 delta) {

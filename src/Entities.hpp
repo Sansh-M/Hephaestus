@@ -12,7 +12,7 @@ public:
 	//entity member function definitions
 	Vec3 grav_Effect(std::vector<float>& position);		
 	Vec3 get_pos();
-
+	
 private:
 	Vec3 origin;
 	float mass;

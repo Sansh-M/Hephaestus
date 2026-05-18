@@ -2,6 +2,7 @@
 #include <vector>
 #include "constants.hpp"
 #include "Entities.hpp"
+#include <cmath>
 /*
 Entity class, used to 
 */
