@@ -2,14 +2,68 @@
   "scene_name": "std solar system",
   "planets": [
     {
-      "name": "Venus",
+      "name": "Sun",
+      "parent": null,
       "origin": {
         "x": 0.0,
         "y": 0.0,
         "z": 0.0
       },
-      "mass": 4.87e24,
+      "mass": 1.989e+30,
+      "radius": 696000000,
+      "orbit_km": null,
+      "hasSignificantAtmosphere": false,
+      "molarMass_g_per_mol": null,
+      "surfacePressure_bar": null,
+      "scaleHeight_km": null,
+      "referenceTemperature_K": null,
+      "atmosphereNotes": "Star, not modeled as a drag body.",
+      "CSVPATHS": []
+    },
+    {
+      "name": "Mercury",
+      "parent": "Sun",
+      "origin": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "mass": 3.3011e+23,
+      "radius": 2439700,
+      "orbit_km": {
+        "semi_major_axis": 57909050,
+        "eccentricity": 0.2056,
+        "period_days": 87.969
+      },
+      "hasSignificantAtmosphere": false,
+      "molarMass_g_per_mol": null,
+      "surfacePressure_bar": 1e-14,
+      "scaleHeight_km": null,
+      "referenceTemperature_K": null,
+      "atmosphereNotes": "Surface-bound exosphere only (~1e-14 bar); no meaningful drag. No descent probe data exists or is needed.",
+      "CSVPATHS": []
+    },
+    {
+      "name": "Venus",
+      "parent": "Sun",
+      "origin": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "mass": 4.87e+24,
       "radius": 6052000,
+      "orbit_km": {
+        "semi_major_axis": 108208000,
+        "eccentricity": 0.0068,
+        "period_days": 224.701
+      },
+      "hasSignificantAtmosphere": true,
+      "molarMass_g_per_mol": 43.45,
+      "surfacePressure_bar": 92.0,
+      "scaleHeight_km": 15.9,
+      "referenceTemperature_K": 735.0,
+      "atmosphereNotes": "Pioneer Venus Multiprobe (4 probes, 1978) descent data, NASA PDS Atmospheres Node.",
       "CSVPATHS": [
         "src\\Data\\Atmosphere_Data\\0VENUS1HIGH2NIGHT.csv",
         "src\\Data\\Atmosphere_Data\\0VENUS1LOW2DAY.csv",
@@ -20,8 +74,351 @@
         "src\\Data\\Atmosphere_Data\\0VENUS1MID2NIGHT.csv",
         "src\\Data\\Atmosphere_Data\\0VENUS1MID2NORTH.csv"
       ]
+    },
+    {
+      "name": "Earth",
+      "parent": "Sun",
+      "origin": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "mass": 5.972e+24,
+      "radius": 6371000,
+      "orbit_km": {
+        "semi_major_axis": 149598023,
+        "eccentricity": 0.0167,
+        "period_days": 365.256
+      },
+      "hasSignificantAtmosphere": true,
+      "molarMass_g_per_mol": 28.97,
+      "surfacePressure_bar": 1.01325,
+      "scaleHeight_km": 8.5,
+      "referenceTemperature_K": 288.0,
+      "atmosphereNotes": "No probe-descent CSV needed/available; use tabulated U.S. Standard Atmosphere 1976 if a real table is wanted instead of the barometric fallback.",
+      "CSVPATHS": []
+    },
+    {
+      "name": "Mars",
+      "parent": "Sun",
+      "origin": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "mass": 6.4171e+23,
+      "radius": 3389500,
+      "orbit_km": {
+        "semi_major_axis": 227939200,
+        "eccentricity": 0.0934,
+        "period_days": 686.98
+      },
+      "hasSignificantAtmosphere": true,
+      "molarMass_g_per_mol": 43.34,
+      "surfacePressure_bar": 0.00636,
+      "scaleHeight_km": 11.1,
+      "referenceTemperature_K": 210.0,
+      "atmosphereNotes": "Viking 1/2, Pathfinder, and MER Spirit/Opportunity entry-descent profiles at NASA PDS Atmospheres Node; needs conversion from their derived-data tables into altitude/pressure/temp CSVs.",
+      "CSVPATHS": []
+    },
+    {
+      "name": "Jupiter",
+      "parent": "Sun",
+      "origin": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "mass": 1.8982e+27,
+      "radius": 69911000,
+      "orbit_km": {
+        "semi_major_axis": 778570000,
+        "eccentricity": 0.0489,
+        "period_days": 4332.59
+      },
+      "hasSignificantAtmosphere": true,
+      "molarMass_g_per_mol": 2.22,
+      "surfacePressure_bar": 1.0,
+      "scaleHeight_km": 27.0,
+      "referenceTemperature_K": 165.0,
+      "atmosphereNotes": "Galileo Probe ASI (1995), single entry point in an anomalous 'hot spot', -132km to +22 bar. NASA PDS Atmospheres Node, Galileo archive.",
+      "CSVPATHS": []
+    },
+    {
+      "name": "Io",
+      "parent": "Jupiter",
+      "origin": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "mass": 8.931938e+22,
+      "radius": 1821600,
+      "orbit_km": {
+        "semi_major_axis": 421700,
+        "eccentricity": 0.0041,
+        "period_days": 1.769
+      },
+      "hasSignificantAtmosphere": false,
+      "molarMass_g_per_mol": null,
+      "surfacePressure_bar": 1e-09,
+      "scaleHeight_km": null,
+      "referenceTemperature_K": null,
+      "atmosphereNotes": "Volcanic SO2 exosphere only, collisionless and highly variable; not a fluid worth modeling for drag.",
+      "CSVPATHS": []
+    },
+    {
+      "name": "Europa",
+      "parent": "Jupiter",
+      "origin": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "mass": 4.799844e+22,
+      "radius": 1560800,
+      "orbit_km": {
+        "semi_major_axis": 670900,
+        "eccentricity": 0.009,
+        "period_days": 3.551
+      },
+      "hasSignificantAtmosphere": false,
+      "molarMass_g_per_mol": null,
+      "surfacePressure_bar": 1e-11,
+      "scaleHeight_km": null,
+      "referenceTemperature_K": null,
+      "atmosphereNotes": "O2 exosphere, effectively a vacuum for drag purposes.",
+      "CSVPATHS": []
+    },
+    {
+      "name": "Ganymede",
+      "parent": "Jupiter",
+      "origin": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "mass": 1.4819e+23,
+      "radius": 2634100,
+      "orbit_km": {
+        "semi_major_axis": 1070400,
+        "eccentricity": 0.0013,
+        "period_days": 7.155
+      },
+      "hasSignificantAtmosphere": false,
+      "molarMass_g_per_mol": null,
+      "surfacePressure_bar": 1e-12,
+      "scaleHeight_km": null,
+      "referenceTemperature_K": null,
+      "atmosphereNotes": "Trace O2/O3 exosphere, effectively a vacuum for drag purposes.",
+      "CSVPATHS": []
+    },
+    {
+      "name": "Callisto",
+      "parent": "Jupiter",
+      "origin": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "mass": 1.075938e+23,
+      "radius": 2410300,
+      "orbit_km": {
+        "semi_major_axis": 1882700,
+        "eccentricity": 0.0074,
+        "period_days": 16.689
+      },
+      "hasSignificantAtmosphere": false,
+      "molarMass_g_per_mol": null,
+      "surfacePressure_bar": 7.5e-12,
+      "scaleHeight_km": null,
+      "referenceTemperature_K": null,
+      "atmosphereNotes": "Thin CO2 exosphere, effectively a vacuum for drag purposes.",
+      "CSVPATHS": []
+    },
+    {
+      "name": "Saturn",
+      "parent": "Sun",
+      "origin": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "mass": 5.6834e+26,
+      "radius": 58232000,
+      "orbit_km": {
+        "semi_major_axis": 1433530000,
+        "eccentricity": 0.0565,
+        "period_days": 10759.22
+      },
+      "hasSignificantAtmosphere": true,
+      "molarMass_g_per_mol": 2.07,
+      "surfacePressure_bar": 1.0,
+      "scaleHeight_km": 59.5,
+      "referenceTemperature_K": 134.0,
+      "atmosphereNotes": "No dedicated entry probe. Only Voyager radio occultations and Cassini Grand Finale (2017) upper-atmosphere composition data exist; no deep T-P descent profile like Venus/Jupiter.",
+      "CSVPATHS": []
+    },
+    {
+      "name": "Titan",
+      "parent": "Saturn",
+      "origin": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "mass": 1.3452e+23,
+      "radius": 2574730,
+      "orbit_km": {
+        "semi_major_axis": 1221870,
+        "eccentricity": 0.0288,
+        "period_days": 15.945
+      },
+      "hasSignificantAtmosphere": true,
+      "molarMass_g_per_mol": 28.6,
+      "surfacePressure_bar": 1.467,
+      "scaleHeight_km": 21.0,
+      "referenceTemperature_K": 93.7,
+      "atmosphereNotes": "BEST NEXT TARGET after Venus: Huygens probe HASI instrument (2005) measured a full continuous 1400km->surface temperature/pressure/density profile, same shape of data as your Venus CSVs. NASA PDS Atmospheres Node, Huygens/HASI archive.",
+      "CSVPATHS": []
+    },
+    {
+      "name": "Enceladus",
+      "parent": "Saturn",
+      "origin": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "mass": 1.08022e+20,
+      "radius": 252100,
+      "orbit_km": {
+        "semi_major_axis": 238040,
+        "eccentricity": 0.0047,
+        "period_days": 1.37
+      },
+      "hasSignificantAtmosphere": false,
+      "molarMass_g_per_mol": null,
+      "surfacePressure_bar": null,
+      "scaleHeight_km": null,
+      "referenceTemperature_K": null,
+      "atmosphereNotes": "No bound atmosphere; south-pole cryovolcanic plumes vent water vapor but do not form a persistent envelope.",
+      "CSVPATHS": []
+    },
+    {
+      "name": "Uranus",
+      "parent": "Sun",
+      "origin": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "mass": 8.681e+25,
+      "radius": 25362000,
+      "orbit_km": {
+        "semi_major_axis": 2872460000,
+        "eccentricity": 0.0457,
+        "period_days": 30688.5
+      },
+      "hasSignificantAtmosphere": true,
+      "molarMass_g_per_mol": 2.64,
+      "surfacePressure_bar": 1.0,
+      "scaleHeight_km": 27.7,
+      "referenceTemperature_K": 76.0,
+      "atmosphereNotes": "No probe has ever entered. Only Voyager 2 (1986) single-point radio occultation vertical profile exists; no in-situ pressure/temperature descent data.",
+      "CSVPATHS": []
+    },
+    {
+      "name": "Titania",
+      "parent": "Uranus",
+      "origin": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "mass": 3.4e+21,
+      "radius": 788400,
+      "orbit_km": {
+        "semi_major_axis": 435910,
+        "eccentricity": 0.0011,
+        "period_days": 8.706
+      },
+      "hasSignificantAtmosphere": false,
+      "molarMass_g_per_mol": null,
+      "surfacePressure_bar": null,
+      "scaleHeight_km": null,
+      "referenceTemperature_K": null,
+      "atmosphereNotes": "No atmosphere detected.",
+      "CSVPATHS": []
+    },
+    {
+      "name": "Oberon",
+      "parent": "Uranus",
+      "origin": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "mass": 3.076e+21,
+      "radius": 761400,
+      "orbit_km": {
+        "semi_major_axis": 583520,
+        "eccentricity": 0.0014,
+        "period_days": 13.463
+      },
+      "hasSignificantAtmosphere": false,
+      "molarMass_g_per_mol": null,
+      "surfacePressure_bar": null,
+      "scaleHeight_km": null,
+      "referenceTemperature_K": null,
+      "atmosphereNotes": "No atmosphere detected.",
+      "CSVPATHS": []
+    },
+    {
+      "name": "Neptune",
+      "parent": "Sun",
+      "origin": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "mass": 1.02413e+26,
+      "radius": 24622000,
+      "orbit_km": {
+        "semi_major_axis": 4495060000,
+        "eccentricity": 0.0113,
+        "period_days": 60195
+      },
+      "hasSignificantAtmosphere": true,
+      "molarMass_g_per_mol": 2.53,
+      "surfacePressure_bar": 1.0,
+      "scaleHeight_km": 19.7,
+      "referenceTemperature_K": 72.0,
+      "atmosphereNotes": "No probe has ever entered. Only Voyager 2 (1989) single-point radio occultation vertical profile exists; no in-situ descent data.",
+      "CSVPATHS": []
+    },
+    {
+      "name": "Triton",
+      "parent": "Neptune",
+      "origin": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "mass": 2.139e+22,
+      "radius": 1353400,
+      "orbit_km": {
+        "semi_major_axis": 354759,
+        "eccentricity": 1.6e-05,
+        "period_days": 5.877
+      },
+      "hasSignificantAtmosphere": false,
+      "molarMass_g_per_mol": 28.0,
+      "surfacePressure_bar": 1.4e-05,
+      "scaleHeight_km": 20.0,
+      "referenceTemperature_K": 38.0,
+      "atmosphereNotes": "Extremely thin N2 atmosphere (~14 microbar), measured only via Voyager 2 (1989) stellar/radio occultation. Non-zero but negligible for drag purposes.",
+      "CSVPATHS": []
     }
-
-
   ]
 }

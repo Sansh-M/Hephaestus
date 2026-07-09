@@ -9,12 +9,12 @@ Class used to define planetary bodies.
 */
 class PlanetaryBody {
 public:
-	PlanetaryBody(std::string name, const Vec3& origin, float mass, float radius, std::string CSVPATHS[10]);
+	PlanetaryBody(std::string name, const Vec3& origin, float mass, float radius, std::vector<std::string> CSVPATHS);
 
 private:
 	std::string name;
 	Vec3 origin;	
 	float mass;
 	float radius;
-	std::string CSVPATHS[10];
+	std::vector<std::string> CSVPATHS;
 };
