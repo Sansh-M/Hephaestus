@@ -1,7 +1,7 @@
 #include <iostream>
 #include <vector>
 #pragma once
-#include "PlanetaryBodies.hpp"
+#include "PlanetaryBody.hpp"
 /*
 set of functions related to gravitational interaction between entities
 */
@@ -17,9 +17,13 @@ namespace Build_Functions {
 	void buildEntity() {
 
 	}
-
-	PlanetaryBodies buildPlanetaryBodies(Vec3 origin, float mass, float radius, float atmospheric_density) {
-		PlanetaryBodies p = PlanetaryBodies(origin, mass, radius, atmospheric_density);
+	/*
+	Function that creates a planet object,
+	inputs: name, origin, mass, radius, atmosphere model
+	output : PlanetaryBodies object
+	*/
+	PlanetaryBody buildPlanetaryBodies(std::string name, const Vec3& origin, float mass, float radius, std::string CSVPATHS[10]) {
+		PlanetaryBody p = PlanetaryBody(name, origin, mass, radius, CSVPATHS);
 		return p;
 	}
 }

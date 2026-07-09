@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 #include "../constants.hpp"
 
 class atmos_physics {
@@ -9,10 +10,12 @@ public:
 		//lookup molar mass using planetID
 		float molarmass=0.0; //lookup molarmass
 		float atmos_density = (atmos_pressure_now * molarmass) / (Physics::UNIVERSAL_GAS_CONSTANT * temperature);
+		return atmos_density;
 	}
 	
 	static float lookup_atmos_pressure(int planetID, std::string timeOfDay, int altitude) {
-		
+		std::string lookup_file_name = std::to_string(0);
+		lookup_file_name.append(std::to_string())
 	}
 
 	static float drag(float atmos_density, float velocity, int entityID, int planetID, std::string timeOfDay, int altitude, float temperature) {

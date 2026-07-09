@@ -2,19 +2,26 @@
   "scene_name": "std solar system",
   "planets": [
     {
-      "name": "Sun",
+      "name": "Venus",
       "origin": {
         "x": 0.0,
         "y": 0.0,
         "z": 0.0
       },
-      "mass": 1.989e30,
-      "radius": 696000000,
-      "atmospheric_density": 
+      "mass": 4.87e24,
+      "radius": 6052000,
+      "CSVPATHS": [
+        "src\\Data\\Atmosphere_Data\\0VENUS1HIGH2NIGHT.csv",
+        "src\\Data\\Atmosphere_Data\\0VENUS1LOW2DAY.csv",
+        "src\\Data\\Atmosphere_Data\\0VENUS1LOW2NIGHT.csv",
+        "src\\Data\\Atmosphere_Data\\0VENUS1LOW2NORTH.csv",
+        "src\\Data\\Atmosphere_Data\\0VENUS1LOW2NULL.csv",
+        "src\\Data\\Atmosphere_Data\\0VENUS1MID2DAY.csv",
+        "src\\Data\\Atmosphere_Data\\0VENUS1MID2NIGHT.csv",
+        "src\\Data\\Atmosphere_Data\\0VENUS1MID2NORTH.csv"
+      ]
     }
-  ],
-
-  "characters"
 
 
+  ]
 }
