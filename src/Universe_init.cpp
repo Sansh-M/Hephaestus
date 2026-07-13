@@ -12,8 +12,10 @@ Class constructs all the objects from the json files to initialize the universe.
 class Universe_init {
 
 public: 
+	/*
+	Builds a vector containing all of the planetary bodies in the universe. 
+	*/
 	std::vector<PlanetaryBody> buildPlanetaryBodies(const std::string& json_path) {
-		//TODO: iterate through Universe.json and call buildPlanetaryBodies function. 
 		std::ifstream file(json_path);
 		if (!file.is_open()) {
 			throw std::runtime_error("Could not open " + json_path);
@@ -32,6 +34,9 @@ public:
 	}
 
 private:
+	/*
+	Build a planetary body object using the json data
+	*/
 	PlanetaryBody BuildPlanetaryBody(const json& p) {
 		std::string name = p.at("name").get<std::string>();
 

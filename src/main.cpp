@@ -1,15 +1,18 @@
 #include <iostream>
+#include "Universe_init.cpp"
 #include "UniversalFunctions.hpp"
+
+const std::string JSONPATH = "src/Data/Universe.json";
+
 
 int main() {
     std::cout << "Physics Engine starting...\n";
     bool EXIT = false;
     //main engine loop 
+    std::cout << "Building Universe...\n";
+    std::vector<PlanetaryBody> planetary_bodies = Universe_init().buildPlanetaryBodies(JSONPATH);
     while (EXIT = false) {
-        //TODO: create a linked list potentially in order to store the planetary bodies relative to each other. 
-
-
-
+        
     }
     return 0;
 }
