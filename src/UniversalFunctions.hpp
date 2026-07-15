@@ -22,8 +22,8 @@ namespace Build_Functions {
 	inputs: name, origin, mass, radius, atmosphere model
 	output : PlanetaryBodies object
 	*/
-	PlanetaryBody buildPlanetaryBodies(std::string name, const Vec3& origin, Vec3 pos,float mass, float radius, std::string CSVPATHS[10]) {
-		PlanetaryBody p = PlanetaryBody(name, origin, pos, mass, radius, CSVPATHS);
+	PlanetaryBody buildPlanetaryBodies(std::string name, const Vec3& origin, Vec3& pos, float mass, float radius, std::vector<std::string> CSVPATHS, OrbitParams orbit_params, RotationFrame rotation_frame, RotationState rotation_state) {
+		PlanetaryBody p = PlanetaryBody(name, origin, pos, mass, radius, CSVPATHS, orbit_params, rotation_frame, rotation_state);
 		return p;
 	}
 }
