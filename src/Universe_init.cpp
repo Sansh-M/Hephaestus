@@ -49,15 +49,41 @@ private:
 		float mass = p.at("mass").get<float>();
 		float radius = p.at("radius").get<float>();
 
-		std::string CSVPATHS[10];
+		std::vector<string> CSVPATHS;
 		if (p.contains("CSVPATHS")) {
 			const auto& paths = p.at("CSVPATHS");
-			for (size_t i = 0; i < paths.size() && i < 10; ++i) {
-				CSVPATHS[i] = paths.at(i).get<std::string>();
+			for (size_t i = 0; i < paths.size(); ++i) {
+				CSVPATHS.push_back(paths.at(i).get<std::string>());
 			}
 		}
 
-		return PlanetaryBody(name, origin, mass, radius, CSVPATHS);
+		float semiMajorAxis = p.at("semiMajorAxis").get<float>();
+		float eccentricity = p.at("eccentricity").get<float>();
+		float orbitalPeriod = p.at("orbitalPeriod").get<float>();
+		float meanAnomaly0 = p.at("meanAnomaly0").get<float>();
+		float inclination = p.at("inclination").get<float>();
+		float raan = p.at("raan").get<float>();
+		float argOfPeriapsis = p.at("argOfPeriapsis").get<float>();
+		float orbitalPeriod = p.at("orbitalPeriod").get<float>();
+		OrbitParams orbit_params = { semiMajorAxis, eccentricity, orbitalPeriod, meanAnomaly0, inclination, raan, argOfPeriapsis, orbitalPeriod };
+
+		float R11 = (cos(planet.orbit_params.raan) * cos(planet.orbit_params.argOfPeriapsis))
+			- sin(planet.orbit_params.raan) * sin(planet.orbit_params.argOfPeriapsis) * cos(planet.orbit_params.inclination); // R11 computation 
+		float R12 = -(cos(raan) * sin(argOfPeriapsis)) - sin(raan) * cos(argOfPeriapsis) * cos(inclination);
+		float R21 = sin(raan) * cos(argOfPeriapsis) + cos(raan) * sin(argOfPeriapsis) * cos(inclination);
+		float R22 = -(sin(raan) * sin(argOfPeriapsis)) + cos(raan) * cos(argOfPeriapsis) * cos(inclination);
+		float R31 = sin(argOfPeriapsis) * sin(inclination);
+		float R32 = cos(argOfPeriapsis) * sin(inclination);
+
+		RotationFrame rotation_frame = { R11, R12, R21, R22, R31, R32 };
+
+		float angle0 = p.at("angle0").get<float>();
+		float angularVelocity = p.at("angularVelocity").get<float>();
+
+		RotationState rotation_state = { angle0, angularVelocity };
+
+	}
+		return PlanetaryBody(name, origin, mass, radius, CSVPATHS, orbit_paramas, rotation_frame, rotation_state);
 	}
 };
 

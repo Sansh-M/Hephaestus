@@ -11,6 +11,7 @@ struct OrbitParams {
 	float inclination;        // radians, tilt of orbital plane
 	float raan;               // radians, longitude of ascending node (Ω)
 	float argOfPeriapsis;     // radians, orientation of ellipse within its plane (ω)
+	float orbitalPeriod; 
 };
 
 /*
