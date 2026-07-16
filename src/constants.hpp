@@ -10,6 +10,7 @@ namespace Physics {
 	constexpr int LIGHT_SPEED = 299792458; // m s^-1
 	//-------------atmospheric constants---------------
 	constexpr float UNIVERSAL_GAS_CONSTANT = 8.314f; //J/mol*K
+	constexpr float PI = 3.14159265f;
 }
 struct Vec3 { float x,y,z; 
 	void add(Vec3 delta) {

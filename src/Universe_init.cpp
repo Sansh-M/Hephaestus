@@ -1,6 +1,8 @@
 #include <iostream>
 #include <fstream>
 #include <nlohmann/json.hpp>
+#include "PlanetaryBody.hpp"
+#include "constants.hpp"
 
 using json = nlohmann::json;
 const std::string JSONPATH = "src/Data/Universe.json";
@@ -40,16 +42,18 @@ private:
 	PlanetaryBody BuildPlanetaryBody(const json& p) {
 		std::string name = p.at("name").get<std::string>();
 
-		vec3 origin{
+		Vec3 origin{
 			p.at("origin").at("x").get<float>(),
 			p.at("origin").at("y").get<float>(),
 			p.at("origin").at("z").get<float>()
 		};
 
+		Vec3 pos = origin;
+
 		float mass = p.at("mass").get<float>();
 		float radius = p.at("radius").get<float>();
 
-		std::vector<string> CSVPATHS;
+		std::vector<std::string> CSVPATHS;
 		if (p.contains("CSVPATHS")) {
 			const auto& paths = p.at("CSVPATHS");
 			for (size_t i = 0; i < paths.size(); ++i) {
@@ -65,10 +69,10 @@ private:
 		float raan = p.at("raan").get<float>();
 		float argOfPeriapsis = p.at("argOfPeriapsis").get<float>();
 		
-		OrbitParams orbit_params = { semiMajorAxis, eccentricity, orbitalPeriod, meanAnomaly0, inclination, raan, argOfPeriapsis, orbitalPeriod };
+		OrbitParams orbit_params = { semiMajorAxis, eccentricity, orbitalPeriod, meanAnomaly0, inclination, raan, argOfPeriapsis };
 
-		float R11 = (cos(planet.orbit_params.raan) * cos(planet.orbit_params.argOfPeriapsis))
-			- sin(planet.orbit_params.raan) * sin(planet.orbit_params.argOfPeriapsis) * cos(planet.orbit_params.inclination); // R11 computation 
+		float R11 = (cos(orbit_params.raan) * cos(orbit_params.argOfPeriapsis))
+			- sin(orbit_params.raan) * sin(orbit_params.argOfPeriapsis) * cos(orbit_params.inclination); // R11 computation 
 		float R12 = -(cos(raan) * sin(argOfPeriapsis)) - sin(raan) * cos(argOfPeriapsis) * cos(inclination);
 		float R21 = sin(raan) * cos(argOfPeriapsis) + cos(raan) * sin(argOfPeriapsis) * cos(inclination);
 		float R22 = -(sin(raan) * sin(argOfPeriapsis)) + cos(raan) * cos(argOfPeriapsis) * cos(inclination);
@@ -80,11 +84,9 @@ private:
 		float angle0 = p.at("angle0").get<float>();
 		float angularVelocity = p.at("angularVelocity").get<float>();
 
-		RotationState rotation_state = { angle0, angularVelocity };
 
-	}
-		return PlanetaryBody(name, origin, mass, radius, CSVPATHS, orbit_paramas, rotation_frame, rotation_state);
-	}
+		return PlanetaryBody(name, origin, pos, mass, radius, CSVPATHS, orbit_params, rotation_frame);
+	};
 };
 
 

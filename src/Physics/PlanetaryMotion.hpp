@@ -4,6 +4,7 @@
 #include "constants.hpp"
 #include <vector>
 using namespace std;
+using namespace Physics;
 
 //*
 // class containing functions for defining the motion of planetary bodies of the solar system around the sun. 
@@ -33,9 +34,8 @@ public:
 	// Function to update coordinate for next timestep for a planetary body. 
 	void updatePosition(PlanetaryBody& planet, float t) {
 
-		//TODO: Implement the rest of the rotation matrix calculations (R12, R21, R22, R31, R32) based on the orbital parameters.
 
-		float n = 2 * M_PI / planet.orbit_params.orbitalPeriod; // mean motion
+		float n = 2 * PI / planet.orbit_params.orbitalPeriod; // mean motion
 		float mean_anomaly = planet.orbit_params.meanAnomaly0 + n * t; // mean anomaly at time t
 		float E = solveEccentricAnomaly(mean_anomaly, planet.orbit_params.eccentricity); // eccentric anomaly
 
@@ -46,7 +46,7 @@ public:
 		x = planet.rotation_frame.R11 * x_P + planet.rotation_frame.R12 * y_Q; //computing the new position for x,y,z
 		y = planet.rotation_frame.R21 * x_P + planet.rotation_frame.R22 * y_Q;
 		z = planet.rotation_frame.R31 * x_P + planet.rotation_frame.R32 * y_Q;
-
+		std::cout << planet.getName() << " is at (" << x << ", " << y << ", " << z << ")\n";
 		Vec3 newPos = { x, y, z };
 
 		planet.setPos(newPos);

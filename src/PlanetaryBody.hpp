@@ -20,20 +20,13 @@ struct RotationFrame {
 	float R11, R12, R21, R22, R31, R32; // Rotation matrix components
 };
 
-/*
-Struct to define the parameters for the rotation of the orbit
-*/
-struct RotationState {
-	float angle0; // Initial angle of rotation (radians)
-	float angularVelocity; // Angular velocity of rotation (radians per second)
-};
 
 /*
 Class used to define planetary bodies.
 */
 class PlanetaryBody {
 public:
-	PlanetaryBody(std::string name, const Vec3& origin, Vec3& pos, float mass, float radius, std::vector<std::string> CSVPATHS, OrbitParams orbit_params, RotationFrame rotation_frame, RotationState rotation_state);
+	PlanetaryBody(std::string name, const Vec3& origin, Vec3& pos, float mass, float radius, std::vector<std::string> CSVPATHS, OrbitParams orbit_params, RotationFrame rotation_frame);
 
 	/*
 	set the position of the planetary body after it has been computed for the next frame. 
@@ -42,6 +35,12 @@ public:
 		pos = new_pos;
 	}
 
+	const Vec3& getPos() const { return pos; }
+	const OrbitParams orbit_params;
+	const RotationFrame rotation_frame;
+
+	const std::string& getName() const { return name; }
+
 private:
 	std::string name;
 	Vec3 origin;
@@ -49,8 +48,4 @@ private:
 	float mass;
 	float radius;
 	std::vector<std::string> CSVPATHS;
-	OrbitParams orbit_params;
-	RotationFrame rotation_frame;
-	RotationState rotation_state;
-
 };
