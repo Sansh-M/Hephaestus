@@ -64,7 +64,7 @@ private:
 		float inclination = p.at("inclination").get<float>();
 		float raan = p.at("raan").get<float>();
 		float argOfPeriapsis = p.at("argOfPeriapsis").get<float>();
-		float orbitalPeriod = p.at("orbitalPeriod").get<float>();
+		
 		OrbitParams orbit_params = { semiMajorAxis, eccentricity, orbitalPeriod, meanAnomaly0, inclination, raan, argOfPeriapsis, orbitalPeriod };
 
 		float R11 = (cos(planet.orbit_params.raan) * cos(planet.orbit_params.argOfPeriapsis))
