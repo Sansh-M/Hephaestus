@@ -9,27 +9,37 @@
 const std::string JSONPATH = "src/Data/Universe.json";
 PlanetaryMotion motion; 
 
+std::atomic<bool> EXIT{ false };
+
+void listenForExit(std::atomic<bool>& exitFlag) {
+    std::string input; 
+    while (!exitFlag) {
+        std::cin >> input; 
+        if (input == "E" || input == "e") {
+            exitFlag = true; 
+        }
+    }
+}
+
 int main() {
     std::cout << "Physics Engine starting...\n";
-    std::atomic<bool> EXIT{ false };
+    
     //main engine loop 
 
     std::cout << "Building Universe...\n";
     std::vector<PlanetaryBody> planetary_bodies = Universe_init().buildPlanetaryBodies(JSONPATH);
 	auto start = std::chrono::steady_clock::now();  
-    while (EXIT == false) {
-		std::cout << "Press E to exit\n";
-        std::string input;
-        std::cin >> input;
+
+	std::thread inputThread(listenForExit, std::ref(EXIT)); //pass a reference so that the function listenForExit can modify the EXIT variable in the main thread
+
+    while (!EXIT) {
         auto now = std::chrono::steady_clock::now();
         float t = std::chrono::duration<float>(now - start).count();
-        
         motion.updateAll(planetary_bodies, t);
-
-        if (input == "E" || input == "e") {
-            EXIT = true;
-        }
     }
+
+	inputThread.join(); // Wait for the input thread to finish
+
 	auto stop = std::chrono::steady_clock::now();
 	auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
 	std::cout << "Exiting Physics Engine...\n";

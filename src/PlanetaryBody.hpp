@@ -26,7 +26,9 @@ Class used to define planetary bodies.
 */
 class PlanetaryBody {
 public:
-	PlanetaryBody(std::string name, const Vec3& origin, Vec3& pos, float mass, float radius, std::vector<std::string> CSVPATHS, OrbitParams orbit_params, RotationFrame rotation_frame);
+	PlanetaryBody(std::string name, const Vec3& origin, Vec3& pos, float mass, float radius, std::vector<std::string> CSVPATHS, OrbitParams orbit_params, RotationFrame rotation_frame)
+		: name(name), origin(origin), pos(pos), mass(mass), radius(radius), CSVPATHS(CSVPATHS), orbit_params(orbit_params), rotation_frame(rotation_frame) {
+	}
 
 	/*
 	set the position of the planetary body after it has been computed for the next frame. 

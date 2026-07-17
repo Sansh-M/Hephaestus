@@ -14,6 +14,9 @@ public:
 
 	void updateAll(std::vector<PlanetaryBody>& planetary_bodies, float t) {
 		for (auto& planet : planetary_bodies) {
+			if (planet.orbit_params.orbitalPeriod == 0.0f) {
+				continue;
+			}
 			updatePosition(planet, t);
 		}
 	}
