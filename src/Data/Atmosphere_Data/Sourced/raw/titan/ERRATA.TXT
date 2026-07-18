@@ -1,0 +1,95 @@
+PDS_VERSION_ID        = PDS3
+RECORD_TYPE           = STREAM
+OBJECT                = TEXT
+  INTERCHANGE_FORMAT    = ASCII
+  PUBLICATION_DATE      = 2006-09-12
+  NOTE                  = "N/A"
+END_OBJECT            = TEXT
+
+END
+
+                            Cassini-Huygens 
+		Atmospheric Structure Instrument (HASI)Data Archive
+                          (HP-SSA-HASI-2-3-4-MISSION-V1.1)
+
+                               ERRATA.TXT
+                             
+
+==============================================================================
+INTRODUCTION
+==============================================================================
+
+     This file contains a list of files of the HASI Data Archive that have been 
+corrected and replaced. The corrections applied with reference to incorrect 
+files previously provided are also described.  
+
+==============================================================================
+CORRECTIONS AND NOTES
+==============================================================================
+
+      
+        The following data files have been corrected and replaced within the 
+DATA directory:
+	\TEM\ 
+HASI_L4_TEM_TEMPERATURE.TAB/LBL 
+	\ACC\ 
+HASI_L4_ACCE_ACC_VEL.TAB/LBL 
+HASI_L4_ACCE_DENSITY.TAB/LBL
+	\PROFILES\ 
+HASI_L4_ALTITUDE_PROFILE.TAB/LBL 
+HASI_L4_VELOCITY_PROFILE.TAB/LBL 
+HASI_L4_ATMO_PROFILE_ENTRY.TAB/LBL 
+HASI_L4_ATMO_PROFILE_DESCEN.TAB/LBL 
+	\PWA\ 
+HASI_L2_PWAD23_MIP.TAB/LBL
+HASI_L2_PWAD3_F0_RAU.TAB/LBL
+HASI_L2_PWAD3_F13_RAU.TAB/LBL
+HASI_L2_PWAD3_F26_RAU.TAB/LBL
+HASI_L2_PWAD3_F52_RAU.TAB/LBL
+HASI_L2_PWAS_MIP.TAB/LBL
+
+
+        The filename of the following HASI file was incorrect. 
+Please note the correct name:
+
+     Correct File Name                Incorrect File Name
+HASI_L4_TEM_TEMPERATURE.TAB\LBL 	HASI_L4_TEM_TEMPERATURE_D.TAB\LBL 
+
+This data file contains data from the descent and surface phases, therefore '_D' 
+suffix should not be present in the filename. 
+      
+     HASI_L4_TEM_TEMPERATURE and HASI_L4_ATMO_PROFILE_DESCEN 
+contained temperature data not dynamically corrected for aerodynamical effects 
+and sensor response (post-calibration) contrary to what was stated in the HASI 
+EAICD document and in the labels. 
+The new files contain the corrected calibrated values of temperature. 
+     The other data files (acceleration, velocity, altitude and atmospheric 
+entry profiles) relevant to the upper atmosphere (entry phase) have been corrected 
+using the data resulting from the latest refinement of the reconstruction 
+algorithm using a more accurate model of the mean molecular weight profile. 
+The new model of the mean molecular weight profile is consistent with 
+composition measured by Huygens GCMS in the lower atmosphere and retrieved from 
+Cassini INMS data at 1500 km. The resulting trajectory and atmospheric profiles 
+are not significantly different from the previous ones. 
+     The atmospheric entry profiles have been cut down at t0, since values 
+retrieved from acceleration during the parachute deployment phase (relevant to 
+time > t0) are not reliable. 
+     The method and procedure used to derive higher level products is briefly 
+described in the HASI calibration reports contained in the HASI data set within 
+the CALIB directory.
+
+     Only data files relevant to engineering data (level 2) of the PWA 
+subsystem have been provided. The data files relevant to scientific data and 
+higher level products (level 3 and 4) are missing in this version of the HASI 
+data set and will be provided in future versions together with the processing and 
+calibration information.
+
+For the Radar files HASI_L2_PWAD3_FXX_RAU ( where XX is for 0,13,26,52) there are 
+minor corrections in the LBL file, namely removing spaces and changing "Product Name"
+in order to include more consistent information. Before we had 60-0km in all files
+but data is limited in a specific altitude range in each file: 60-10; 10-8; 8-6; 6-0km.
+The mutual impedance files HASI_L2_PWAS_MIP and HASI_L2_PWAD23_MIP had some corrupted 
+columns and some errors in timing so they have been corrected and updated. Furthermore 
+TAB file did not correspond to the LBL file for what concern the column content.
+
+
