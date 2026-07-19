@@ -4,7 +4,7 @@
 #pragma once
 
 /*
-Entity class, used to
+Entity class where Entity can beanything 
 */
 class Entity {
 public:

@@ -42,6 +42,7 @@ public:
 	}
 
 	std::vector<PlanetaryCoordinates> poles; //convention for poles vector is that first coordinate is the north pole and second vector is south pole 
+	
 	const Vec3& getPos() const { return pos; }
 	const OrbitParams orbit_params;
 	const RotationFrame rotation_frame;

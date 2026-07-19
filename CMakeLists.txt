@@ -8,7 +8,7 @@ add_executable(Hephaestus
     src/main.cpp
     src/constants.hpp
     src/Entities.hpp
-    src/Entities.cpp
+    
     src/PlanetaryBody.hpp
     src/UniversalFunctions.hpp
     src/Universe.cpp
