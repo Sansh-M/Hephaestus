@@ -9,9 +9,14 @@
 
 class atmos_physics {
 public:
-	static float atmos_demsity_now(int planetID, std::string timeOfDay, std::string planetaryAngle, int altitude, float temperature);
 
-	static float lookup_atmos_pressure(int planetID, std::string timeOfDay, int altitude);
+	static bool parseAtmosphereRow(const std::string& line, AtmosphereRow& row);
+
+	static float atmos_demsity_now(PlanetaryBody& planet, std::string planetaryAngle, double altitude, float temperature);
+
+	static std::string build_csv_path(const PlanetaryBody& planet);
+
+	static std::optional<double> lookup_atmos_pressure(const std::string& atmos_pressure_path, double altitude)
 
 	static float drag(float atmos_density, float velocity, int entityID, int planetID, std::string timeOfDay, int altitude, float temperature);
 

@@ -1,10 +1,15 @@
 # Sourced atmospheric profiles
 
-This folder contains authoritative source tables in `raw/` and project-ready CSVs in `profiles/` for every body currently marked `hasSignificantAtmosphere: true` in `Universe.json`, other than Venus (which already has files).
+The project uses one active, altitude-only atmosphere CSV per body. Active
+files live one directory above this README and are named with the uppercase
+planet name so `build_csv_path` can construct the path without selecting a
+mission, location, or time-of-day variant:
 
-## Project-ready CSV schema
+```text
+src/Data/Atmosphere_Data/<PLANET>.csv
+```
 
-Every file in `profiles/` uses the same three-column schema and descending altitude order:
+Every active file uses descending altitude order and this schema:
 
 ```text
 Altitude,Pressure,TempKelvin
@@ -14,43 +19,66 @@ Altitude,Pressure,TempKelvin
 - `Pressure`: bar.
 - `TempKelvin`: K.
 
-Raw archive values are retained unchanged in `raw/`. Only column selection, unit conversion, ordering, and the explicitly documented Neptune altitude reconstruction were applied to the project-ready files.
-
-All project-ready CSVs have exactly three values per row and strictly descending altitude. Pressure increases with descent in every profile except for four reversals retained from the recovered Viking 1 source (three reconstruction irregularities/possible source typos and one overlap between low-altitude profile phases); no smoothing was applied.
+Original downloads and archive labels remain unchanged under `raw/`. The
+active CSVs contain only the normalized columns, conversions, and joins
+documented below.
 
 ## Mission and source map
 
-| Target | Project-ready file | Mission / reference | Instrument / product | Official source | Important limitation |
+| Target | Active file | Mission / reference | Instrument / product | Official source | Important limitation |
 |---|---|---|---|---|---|
-| Earth | `EARTH_US_STANDARD_ATMOSPHERE_1976.csv` | U.S. Standard Atmosphere 1976; not a space mission | COESA reference atmosphere | [NASA PDS Atmospheres Node table](https://atmos.nmsu.edu/planetary_datasets/earth_temppres.html); [NASA-TM-X-74335](https://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19770009539.pdf) | Idealized standard atmosphere, 0-86 km, not a time- or location-specific observation. |
-| Mars | `MARS_VIKING_1_ENTRY.csv` | Viking 1 Lander, 1976 | Entry-vehicle accelerometer atmospheric reconstruction | [NASA PDS Atmospheres Node entry-profile page](https://atmos.nmsu.edu/data_and_services/atmospheres_data/MARS/viking/entry_profiles.html); [recovered Viking 1 table](https://atmos.nmsu.edu/data_and_services/atmospheres_data/MARS/viking/logs/VL1_entry_profile.txt) | The PDS page says these profiles were recovered rather than originally archived. Values below about 5 km include extrapolated and descent-phase rows identified in the raw file. |
-| Mars | `MARS_VIKING_2_ENTRY.csv` | Viking 2 Lander, 1976 | Entry-vehicle accelerometer atmospheric reconstruction | [NASA PDS Atmospheres Node entry-profile page](https://atmos.nmsu.edu/data_and_services/atmospheres_data/MARS/viking/entry_profiles.html); [recovered Viking 2 table](https://atmos.nmsu.edu/data_and_services/atmospheres_data/MARS/viking/logs/VL2_entry_profile.txt) | Profile ends near 26 km and does not reach the surface. |
-| Jupiter | `JUPITER_GALILEO_ASI.csv` | Galileo Probe entry, 1995 | Atmospheric Structure Instrument (ASI), data set `GP-J-ASI-3-ENTRY-V1.0` | [NASA PDS ASI page](https://pds-atmospheres.nmsu.edu/data_and_services/atmospheres_data/Galileo/asi.html); [PDS data volume](https://pds-atmospheres.nmsu.edu/PDS/data/gp_0001/); [DOI](https://doi.org/10.17189/tfsa-pb91) | One entry location in a Jovian hot spot; not a global mean profile. Upper and lower ASI tables were joined without filling the approximately 5 km phase gap. |
-| Saturn | `SATURN_VOYAGER_2_RSS_INGRESS.csv` | Voyager 2 Saturn encounter, 1981 | Radio Science Subsystem (RSS) ingress occultation, publication-derived table | [NASA PDS Atmospheres Node table page](https://atmos.nmsu.edu/planetary_datasets/saturn_temppres.html); [ASCII source](https://atmos.nmsu.edu/planetary_datasets/saturntemppres.txt) | Remote-sensing retrieval rather than an entry probe; covers about 0.2-1298 mbar and uses the 1-bar level as zero altitude. |
-| Titan | `TITAN_HUYGENS_HASI.csv` | Cassini-Huygens / Huygens Probe descent, 2005 | Huygens Atmospheric Structure Instrument (HASI), data set `HP-SSA-HASI-2-3-4-MISSION-V1.1` | [NASA PDS HASI page](https://pds-atmospheres.nmsu.edu/data_and_services/atmospheres_data/Huygens/HASI.html); [PDS profile directory](https://atmos.nmsu.edu/PDS/data/PDS4/Huygens/hphasi_bundle/DATA/PROFILES/) | Entry and descent products are joined without interpolating the approximately 10 km phase gap. The downloaded v1.1 products incorporate the temperature/profile corrections described by the archive errata. |
-| Uranus | `URANUS_VOYAGER_2_RSS_INGRESS.csv` | Voyager 2 Uranus encounter, 1986 | RSS ingress occultation, nominal atmosphere model | [NASA PDS Atmospheres Node table page](https://atmos.nmsu.edu/planetary_datasets/uranus_temppres.html); [ASCII source](https://atmos.nmsu.edu/planetary_datasets/uranustemppres.txt) | Remote-sensing retrieval, not in situ; assumes a helium-to-hydrogen abundance ratio of 15/85 and uses the 1-bar level as zero altitude. |
-| Neptune | `NEPTUNE_VOYAGER_2_RSS_DERIVED_ALTITUDE.csv` | Voyager 2 Neptune encounter, 1989 | RSS occultation temperature-pressure profile | [NASA PDS Atmospheres Node table page](https://atmos.nmsu.edu/planetary_datasets/neptune_temppres.html); [ASCII source](https://atmos.nmsu.edu/planetary_datasets/neptunetempprestable.txt) | The NASA table has pressure and temperature but no altitude. Altitude was reconstructed as described below and is therefore processed, not a directly archived column. |
+| Venus | `VENUS.csv` | Pioneer Venus Multiprobe Sounder, 1978; NASA SP-8011 Model I, 1972 | Sounder atmospheric structure measurements plus an engineering upper-atmosphere model | [NASA PDS Sounder table](https://atmos.nmsu.edu/planetary_datasets/venus_temppres.html); [NASA SP-8011](https://ntrs.nasa.gov/citations/19730008097) | Temporary hybrid nominal profile; details below. It is not Venus-GRAM or VIRA. |
+| Earth | `EARTH.csv` | U.S. Standard Atmosphere 1976; not a space mission | COESA reference atmosphere | [NASA PDS Atmospheres Node table](https://atmos.nmsu.edu/planetary_datasets/earth_temppres.html); [NASA-TM-X-74335](https://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19770009539.pdf) | Idealized standard atmosphere, 0-86 km, not a time- or location-specific observation. |
+| Mars | `MARS.csv` | Viking 1 Lander, 1976 | Entry-vehicle accelerometer atmospheric reconstruction | [NASA PDS entry-profile page](https://atmos.nmsu.edu/data_and_services/atmospheres_data/MARS/viking/entry_profiles.html); [recovered Viking 1 table](https://atmos.nmsu.edu/data_and_services/atmospheres_data/MARS/viking/logs/VL1_entry_profile.txt) | Values below about 5 km include extrapolated and descent-phase rows identified in the source. Four source pressure reversals are retained without smoothing. Viking 2 is retained as raw provenance but is not active because the first iteration permits only one file per planet. |
+| Jupiter | `JUPITER.csv` | Galileo Probe entry, 1995 | Atmospheric Structure Instrument, `GP-J-ASI-3-ENTRY-V1.0` | [NASA PDS ASI page](https://pds-atmospheres.nmsu.edu/data_and_services/atmospheres_data/Galileo/asi.html); [PDS volume](https://pds-atmospheres.nmsu.edu/PDS/data/gp_0001/); [DOI](https://doi.org/10.17189/tfsa-pb91) | One entry location in a Jovian hot spot. Upper and lower tables are joined without filling the approximately 5 km phase gap. |
+| Saturn | `SATURN.csv` | Voyager 2 Saturn encounter, 1981 | Radio Science Subsystem ingress occultation, publication-derived table | [NASA PDS table page](https://atmos.nmsu.edu/planetary_datasets/saturn_temppres.html); [ASCII source](https://atmos.nmsu.edu/planetary_datasets/saturntemppres.txt) | Remote-sensing retrieval; covers about 0.2-1298 mbar and uses the 1-bar level as zero altitude. |
+| Titan | `TITAN.csv` | Cassini-Huygens / Huygens Probe, 2005 | Huygens Atmospheric Structure Instrument, `HP-SSA-HASI-2-3-4-MISSION-V1.1` | [NASA PDS HASI page](https://pds-atmospheres.nmsu.edu/data_and_services/atmospheres_data/Huygens/HASI.html); [PDS profile directory](https://atmos.nmsu.edu/PDS/data/PDS4/Huygens/hphasi_bundle/DATA/PROFILES/) | Entry and descent products are joined without filling the approximately 10 km phase gap. The v1.1 products include the archive corrections. |
+| Uranus | `URANUS.csv` | Voyager 2 Uranus encounter, 1986 | RSS ingress occultation nominal atmosphere | [NASA PDS table page](https://atmos.nmsu.edu/planetary_datasets/uranus_temppres.html); [ASCII source](https://atmos.nmsu.edu/planetary_datasets/uranustemppres.txt) | Remote-sensing retrieval; assumes a helium-to-hydrogen abundance ratio of 15/85 and uses the 1-bar level as zero altitude. |
+| Neptune | `NEPTUNE.csv` | Voyager 2 Neptune encounter, 1989 | RSS occultation temperature-pressure profile | [NASA PDS table page](https://atmos.nmsu.edu/planetary_datasets/neptune_temppres.html); [ASCII source](https://atmos.nmsu.edu/planetary_datasets/neptunetempprestable.txt) | Source has no altitude. Altitude is reconstructed as described below. |
+
+## Venus hybrid profile
+
+`VENUS.csv` is reproducibly generated by `generate_venus_profile.py` from:
+
+- `raw/venus/venustemppres.txt`: Pioneer Venus Sounder lower-atmosphere rows from 0-64.83 km and middle-atmosphere rows from 69-116 km. Pressure is already in bar.
+- `raw/venus/NASA_SP_8011_Venus_Atmosphere.pdf`: Table 5, Model I rows from 120-350 km. Pressure is converted from millibar to bar.
+
+NASA SP-8011 defines zero altitude at a 6050 km planetary radius. The project
+and Sounder profile use 6052 km, so the SP-8011 rows are shifted downward by
+2 km before joining. The resulting upper rows cover 118-348 km in project
+altitude. The lookup function interpolates across the short 64.83-69 km and
+116-118 km source gaps.
+
+The SP-8011 portion predates Pioneer Venus and is only a temporary way to
+avoid an abrupt vacuum boundary during prototype entries. Replace it with an
+official Venus-GRAM/VIRA nominal profile when the NASA GRAM distribution is
+available. Do not use this hybrid as a day/night, latitude-dependent, or
+mission-design atmosphere.
+
+Downloaded-source SHA-256 hashes:
+
+```text
+venustemppres.txt                    A4D3AA3967574169BDE312F1CF4881973EE1218D16023BCFD983BC680EA6BBF2
+NASA_SP_8011_Venus_Atmosphere.pdf   024CCDE691F62565C382CF3997A4171F865701EB6E719111A8644C8639D912FF
+```
 
 ## Neptune altitude reconstruction
 
-The source table was anchored at `0 km = 1000 mbar`. Adjacent pressure levels were integrated using hydrostatic balance and the ideal-gas law:
+The source table is anchored at `0 km = 1000 mbar`. Adjacent pressure levels
+are integrated using hydrostatic balance and the ideal-gas law:
 
 ```text
 delta_z = -(R * mean_temperature / (molar_mass * gravity)) * delta_ln_pressure
 ```
 
-Constants: `R = 8.31446261815324 J mol^-1 K^-1`, molar mass `0.00253 kg mol^-1`, and gravity `11.15 m s^-2`. This produces a roughly 40 km separation between the 1-bar and 100-mbar levels, consistent with the Voyager 2 occultation result reported by Lindal.
+Constants: `R = 8.31446261815324 J mol^-1 K^-1`, molar mass
+`0.00253 kg mol^-1`, and gravity `11.15 m s^-2`. This produces roughly 40 km
+between the 1-bar and 100-mbar levels, consistent with the Voyager 2
+occultation result reported by Lindal.
 
 ## Bodies intentionally excluded
 
-No profiles were added for Mercury, Io, Europa, Ganymede, Callisto, Enceladus, Titania, Oberon, or Triton. They are marked as negligible/exosphere/no-atmosphere cases in `Universe.json` and do not warrant the fluid-atmosphere drag tables requested here. The Sun is also excluded because the project does not model it as an atmospheric drag body.
-
-## Existing Venus-file audit
-
-The existing Venus files do not currently share a reliable three-column schema:
-
-- `0VENUS1LOW2NULL.csv` appears to contain altitude, temperature, and **density**, while the third column is labeled `Pressure`. Its first value `0.1964` matches the density column in the NASA table; the corresponding pressure is `0.0925 bar`.
-- `0VENUS1LOW2DAY.csv` has four data values under three headers. Its third value also matches density rather than pressure.
-- `0VENUS1LOW2NIGHT.csv` begins with the values from the Pioneer Venus **North Probe** table, not the Night Probe table.
-
-The new files deliberately use the verified canonical schema above. Existing Venus files were not changed as part of this sourcing pass.
+No active profiles exist for Mercury, Io, Europa, Ganymede, Callisto,
+Enceladus, Titania, Oberon, or Triton. They are negligible-atmosphere,
+exosphere, plume, or no-atmosphere cases for the current fluid-drag model. The
+Sun is also excluded because it is not modeled as an atmospheric drag body.

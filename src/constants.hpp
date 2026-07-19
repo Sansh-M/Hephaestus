@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <cmath>
 #pragma once
 
 namespace Physics {
@@ -11,6 +12,7 @@ namespace Physics {
 	//-------------atmospheric constants---------------
 	constexpr float UNIVERSAL_GAS_CONSTANT = 8.314f; //J/mol*K
 	constexpr float PI = 3.14159265f;
+	
 }
 struct Vec3 { float x,y,z; 
 	void add(Vec3 delta) {
@@ -29,6 +31,20 @@ struct Vec3 { float x,y,z;
 		x /= factor.x; 
 		y /= factor.y;
 		z /= factor.z;
+	}
+	
+	//function to compute dot product of two vectors
+	Vec3 dot(Vec3 vector1, Vec3 vector2) {
+		x = vector1.x * vector2.x;
+		y = vector1.y * vector2.y;
+		z = vector1.z * vector2.z;
+		return Vec3{ x,y,z };
+	}
+
+	//function to normalize a vector 
+	Vec3 normalize(Vec3 point, Vec3 vec) {
+		float vecLength = sqrt((vec.x - point.x) ^ 2 + (vec.y - point.y) ^ 2 + (vec.z - point.z) ^ 2);
+		return Vec3{ (vec.x / vecLength), (vec.y / vecLength), (vec.z / vecLength) };
 	}
 };
 

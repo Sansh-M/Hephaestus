@@ -71,16 +71,9 @@
       "surfacePressure_bar": 92.0,
       "scaleHeight_km": 15.9,
       "referenceTemperature_K": 735.0,
-      "atmosphereNotes": "Pioneer Venus Multiprobe (4 probes, 1978) descent data, NASA PDS Atmospheres Node.",
+      "atmosphereNotes": "Nominal prototype profile: Pioneer Venus Sounder Probe from 0-116 km, joined to NASA SP-8011 Model I above 116 km. See the sourced-atmosphere README for the altitude-datum adjustment and limitations.",
       "CSVPATHS": [
-        "src\\Data\\Atmosphere_Data\\0VENUS1HIGH2NIGHT.csv",
-        "src\\Data\\Atmosphere_Data\\0VENUS1LOW2DAY.csv",
-        "src\\Data\\Atmosphere_Data\\0VENUS1LOW2NIGHT.csv",
-        "src\\Data\\Atmosphere_Data\\0VENUS1LOW2NORTH.csv",
-        "src\\Data\\Atmosphere_Data\\0VENUS1LOW2NULL.csv",
-        "src\\Data\\Atmosphere_Data\\0VENUS1MID2DAY.csv",
-        "src\\Data\\Atmosphere_Data\\0VENUS1MID2NIGHT.csv",
-        "src\\Data\\Atmosphere_Data\\0VENUS1MID2NORTH.csv"
+        "src\\Data\\Atmosphere_Data\\VENUS.csv"
       ]
     },
     {
@@ -105,8 +98,10 @@
       "surfacePressure_bar": 1.01325,
       "scaleHeight_km": 8.5,
       "referenceTemperature_K": 288.0,
-      "atmosphereNotes": "No probe-descent CSV needed/available; use tabulated U.S. Standard Atmosphere 1976 if a real table is wanted instead of the barometric fallback.",
-      "CSVPATHS": []
+      "atmosphereNotes": "U.S. Standard Atmosphere 1976 nominal reference profile.",
+      "CSVPATHS": [
+        "src\\Data\\Atmosphere_Data\\EARTH.csv"
+      ]
     },
     {
       "name": "Mars",
@@ -130,8 +125,10 @@
       "surfacePressure_bar": 0.00636,
       "scaleHeight_km": 11.1,
       "referenceTemperature_K": 210.0,
-      "atmosphereNotes": "Viking 1/2, Pathfinder, and MER Spirit/Opportunity entry-descent profiles at NASA PDS Atmospheres Node; needs conversion from their derived-data tables into altitude/pressure/temp CSVs.",
-      "CSVPATHS": []
+      "atmosphereNotes": "Viking 1 entry reconstruction is the active nominal profile; Viking 2 remains in the raw provenance data.",
+      "CSVPATHS": [
+        "src\\Data\\Atmosphere_Data\\MARS.csv"
+      ]
     },
     {
       "name": "Jupiter",
@@ -156,7 +153,9 @@
       "scaleHeight_km": 27.0,
       "referenceTemperature_K": 165.0,
       "atmosphereNotes": "Galileo Probe ASI (1995), single entry point in an anomalous 'hot spot', -132km to +22 bar. NASA PDS Atmospheres Node, Galileo archive.",
-      "CSVPATHS": []
+      "CSVPATHS": [
+        "src\\Data\\Atmosphere_Data\\JUPITER.csv"
+      ]
     },
     {
       "name": "Io",
@@ -285,7 +284,9 @@
       "scaleHeight_km": 59.5,
       "referenceTemperature_K": 134.0,
       "atmosphereNotes": "No dedicated entry probe. Only Voyager radio occultations and Cassini Grand Finale (2017) upper-atmosphere composition data exist; no deep T-P descent profile like Venus/Jupiter.",
-      "CSVPATHS": []
+      "CSVPATHS": [
+        "src\\Data\\Atmosphere_Data\\SATURN.csv"
+      ]
     },
     {
       "name": "Titan",
@@ -310,8 +311,10 @@
       "surfacePressure_bar": 1.467,
       "scaleHeight_km": 21.0,
       "referenceTemperature_K": 93.7,
-      "atmosphereNotes": "BEST NEXT TARGET after Venus: Huygens probe HASI instrument (2005) measured a full continuous 1400km->surface temperature/pressure/density profile, same shape of data as your Venus CSVs. NASA PDS Atmospheres Node, Huygens/HASI archive.",
-      "CSVPATHS": []
+      "atmosphereNotes": "Cassini-Huygens Huygens Atmospheric Structure Instrument (HASI) entry and descent profile.",
+      "CSVPATHS": [
+        "src\\Data\\Atmosphere_Data\\TITAN.csv"
+      ]
     },
     {
       "name": "Enceladus",
@@ -362,7 +365,9 @@
       "scaleHeight_km": 27.7,
       "referenceTemperature_K": 76.0,
       "atmosphereNotes": "No probe has ever entered. Only Voyager 2 (1986) single-point radio occultation vertical profile exists; no in-situ pressure/temperature descent data.",
-      "CSVPATHS": []
+      "CSVPATHS": [
+        "src\\Data\\Atmosphere_Data\\URANUS.csv"
+      ]
     },
     {
       "name": "Titania",
@@ -439,7 +444,9 @@
       "scaleHeight_km": 19.7,
       "referenceTemperature_K": 72.0,
       "atmosphereNotes": "No probe has ever entered. Only Voyager 2 (1989) single-point radio occultation vertical profile exists; no in-situ descent data.",
-      "CSVPATHS": []
+      "CSVPATHS": [
+        "src\\Data\\Atmosphere_Data\\NEPTUNE.csv"
+      ]
     },
     {
       "name": "Triton",

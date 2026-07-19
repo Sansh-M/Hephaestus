@@ -57,6 +57,8 @@ PlanetaryBody Universe_init::BuildPlanetaryBody(const json& p) {
 	OrbitParams orbit_params = { 0, 0, 0, 0, 0, 0, 0 }; // Default values for Sun
 	RotationFrame rotation_frame = { 1, 0, 0, 1, 0, 0 }; // Identity matrix for Sun
 
+	
+
 	if (name != "Sun") {
 		float semiMajorAxis = p.at("semiMajorAxis").get<float>();
 		float eccentricity = p.at("eccentricity").get<float>();

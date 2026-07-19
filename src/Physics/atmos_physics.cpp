@@ -9,12 +9,36 @@
 #include <algorithm>
 #include <cmath>
 #include <exception>
+#include <cctype>
+#include <map>
+
+namespace {
+	constexpr double BAR_TO_PASCALS = 100000.0;
+
+	// Mean atmospheric molar masses in kg/mol. This is the unit required by
+	// rho = pM/(RT) when pressure is in pascals and R is in J/(mol*K).
+	const std::map<std::string, double> molarMassesKgPerMol = {
+		{"Venus", 0.04345},
+		{"Earth", 0.02897},
+		{"Mars", 0.04334},
+		{"Jupiter", 0.00222},
+		{"Saturn", 0.00207},
+		{"Titan", 0.02860},
+		{"Uranus", 0.00264},
+		{"Neptune", 0.00253}
+	};
+}
 
 struct AtmosphereRow {
 	double altitudeKm;   // Altitude column, measured in kilometres.
 	double pressureBar;  // Pressure column, measured in bar.
 	double temperatureK; // Temperature column, measured in kelvin.
 };
+
+static std::string build_csv_path(const PlanetaryBody& planet);
+static std::optional<double> lookup_atmos_pressure(
+	const std::string& atmos_pressure_path,
+	double altitude);
 
 static bool parseAtmosphereRow(const std::string& line, AtmosphereRow& row) {
 	std::stringstream stream(line); // Lets us read one comma-separated field at a time.
@@ -31,7 +55,7 @@ static bool parseAtmosphereRow(const std::string& line, AtmosphereRow& row) {
 
 	try {
 		row.altitudeKm = std::stod(altitude);     // Convert string text to a double.
-		row.pressureBar = std::stod(pressure);    // stod also accepts scientific notation.
+		row.pressureBar = std::stod(pressure);    // stod to accept scientific notation as well
 		row.temperatureK = std::stod(temperature);
 	}
 	catch (const std::exception&) {
@@ -42,30 +66,40 @@ static bool parseAtmosphereRow(const std::string& line, AtmosphereRow& row) {
 }
 
 
-static float atmos_demsity_now(PlanetaryBody& planet, std::string planetaryAngle, std::string altitude, float temperature) {
-	std::string atmos_pressure_path = build_csv_path(planet, timeOfDay, altitude);
+static float atmos_demsity_now(PlanetaryBody& planet, std::string planetaryAngle, double altitude, float temperature) {
 
-	float atmos_pressure_now = 
+	std::string atmos_pressure_path = build_csv_path(planet);
 
-	//lookup molar mass using planetID
-	float molarmass=0.0; //lookup molarmass
-	float atmos_density = (atmos_pressure_now * molarmass) / (Physics::UNIVERSAL_GAS_CONSTANT * temperature);
-	return atmos_density;
+	std::optional<double> atmos_pressure_now = lookup_atmos_pressure(atmos_pressure_path, altitude);
+	if (!atmos_pressure_now) {
+		return 0.0f;
+	}
+
+	const auto molarMass = molarMassesKgPerMol.find(planet.getName());
+	if (molarMass == molarMassesKgPerMol.end() || temperature <= 0.0f) {
+		return 0.0f;
+	}
+
+	const double pressurePa = *atmos_pressure_now * BAR_TO_PASCALS;
+	const double atmosDensity =
+		(pressurePa * molarMass->second) /
+		(Physics::UNIVERSAL_GAS_CONSTANT * temperature);
+
+	return static_cast<float>(atmosDensity);
 }
 
 	
-std::string build_csv_path(PlanetaryBody& planet, std::string timeOfDay, std::string altitude) {
-	std::string lookup_file_name = std::to_string(0);
-	lookup_file_name.append(planet.getName()); //appends name and converts it to fully uppercase
-	lookup_file_name.append(std::to_string(1));
-	lookup_file_name.append(timeOfDay);
-	lookup_file_name.append(std::to_string(2));
-	lookup_file_name.append(timeOfDay);
+static std::string build_csv_path(const PlanetaryBody& planet) {
+	std::string name = planet.getName();
+	std::transform(name.begin(), name.end(), name.begin(), [](unsigned char character) {
+		return static_cast<char>(std::toupper(character));
+	});
+
 	std::string path = "src/Data/Atmosphere_Data/";
-	path.append(lookup_file_name).append(".csv");
+	return path.append(name).append(".csv");
 }
 
-std::optional<double> lookup_atmos_pressure(const std::string& atmos_pressure_path, double altitude) { // Returns a pressure or no value.
+static std::optional<double> lookup_atmos_pressure(const std::string& atmos_pressure_path, double altitude) { // Returns a pressure or no value.
 	std::ifstream atmos_file(atmos_pressure_path); // Open the CSV for reading.
 
 	if (!atmos_file.is_open()) {
@@ -94,8 +128,7 @@ std::optional<double> lookup_atmos_pressure(const std::string& atmos_pressure_pa
 		if (havePrevious) {
 			const double minimumAltitude = std::min(previous.altitudeKm, current.altitudeKm); // Works with either CSV order.
 
-			const double maximumAltitude =
-				std::max(previous.altitudeKm, current.altitudeKm);
+			const double maximumAltitude = std::max(previous.altitudeKm, current.altitudeKm);
 
 			if (altitude >= minimumAltitude &&
 				altitude <= maximumAltitude) { // The requested altitude lies between these rows.
@@ -129,11 +162,11 @@ std::optional<double> lookup_atmos_pressure(const std::string& atmos_pressure_pa
 
 
 static float drag(float atmos_density, float velocity, int entityID, int planetID, std::string timeOfDay, int altitude, float temperature) {
-
+	return 0.0f;
 }
 
 static float calc_C_D(int entityID) {
-
+	return 0.0f;
 }
 
 	
