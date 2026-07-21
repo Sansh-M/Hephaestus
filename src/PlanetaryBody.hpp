@@ -20,6 +20,7 @@ struct RotationFrame {
 	float R11, R12, R21, R22, R31, R32; // Rotation matrix components
 };
 
+//longitude and lattitude are angles, coordinates can be computed for the global system by multiplying 
 struct PlanetaryCoordinates {
 	double longitude; 
 	double lattitude; 
@@ -30,8 +31,8 @@ Class used to define planetary bodies.
 */
 class PlanetaryBody {
 public:
-	PlanetaryBody(std::string name, const Vec3& origin, Vec3& pos, float mass, float radius, std::vector<std::string> CSVPATHS, OrbitParams orbit_params, RotationFrame rotation_frame)
-		: name(name), origin(origin), pos(pos), mass(mass), radius(radius), CSVPATHS(CSVPATHS), orbit_params(orbit_params), rotation_frame(rotation_frame) {
+	PlanetaryBody(std::string name, const Vec3& origin, Vec3& pos, double planetRotation, float mass, float radius, std::vector<std::string> CSVPATHS, OrbitParams orbit_params, RotationFrame rotation_frame)
+		: name(name), origin(origin), pos(pos), planetRotation(planetRotation), mass(mass), radius(radius), CSVPATHS(CSVPATHS), orbit_params(orbit_params), rotation_frame(rotation_frame) {
 	}
 
 	/*
@@ -41,19 +42,34 @@ public:
 		pos = new_pos;
 	}
 
-	std::vector<PlanetaryCoordinates> poles; //convention for poles vector is that first coordinate is the north pole and second vector is south pole 
-	
 	const Vec3& getPos() const { return pos; }
 	const OrbitParams orbit_params;
 	const RotationFrame rotation_frame;
-
 	const std::string& getName() const { return name; }
+	const Vec3& getReferenceCoordinateAtEpoch() const {
+		return SurfaceReferenceCoordinateAtEpoch;
+	}
+
+	const Vec3& getReferenceCoordinate() const {
+		return SurfaceReferenceCoordinate;
+	}
+	
+	void setReferenceCoordinate(const Vec3& updated_reference_coordinate) {
+		SurfaceReferenceCoordinate = updated_reference_coordinate;
+	}
 
 private:
 	std::string name;
 	Vec3 origin;
 	Vec3 pos; 
+	double planetRotation;
 	float mass;
 	float radius;
 	std::vector<std::string> CSVPATHS;
+	Vec3 SurfaceReferenceCoordinateAtEpoch = { radius, 0.0f, 0.0f };
+	Vec3 SurfaceReferenceCoordinate = {
+		pos.x + radius,
+		pos.y,
+		pos.z
+	};
 };

@@ -18,6 +18,7 @@ public:
 				continue;
 			}
 			updatePosition(planet, t);
+
 		}
 	}
 
@@ -54,6 +55,5 @@ public:
 
 		planet.setPos(newPos);
 	}
-
 
 };

@@ -43,7 +43,7 @@ struct Vec3 { float x,y,z;
 
 	//function to normalize a vector 
 	Vec3 normalize(Vec3 point, Vec3 vec) {
-		float vecLength = sqrt((vec.x - point.x) ^ 2 + (vec.y - point.y) ^ 2 + (vec.z - point.z) ^ 2);
+		float vecLength = sqrt((vec.x - point.x) ^ 2.0 + (vec.y - point.y) ^ 2.0 + (vec.z - point.z) ^ 2.0);
 		return Vec3{ (vec.x / vecLength), (vec.y / vecLength), (vec.z / vecLength) };
 	}
 };

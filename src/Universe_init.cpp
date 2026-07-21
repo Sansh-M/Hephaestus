@@ -82,7 +82,7 @@ PlanetaryBody Universe_init::BuildPlanetaryBody(const json& p) {
 	}
 	
 
-	return PlanetaryBody(name, origin, pos, mass, radius, CSVPATHS, orbit_params, rotation_frame);
+	return PlanetaryBody(name, origin, pos, 0.0, mass, radius, CSVPATHS, orbit_params, rotation_frame);
 };
 
 

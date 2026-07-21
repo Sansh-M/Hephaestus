@@ -1,6 +1,5 @@
 #include <iostream>
 #include "Universe_init.hpp"
-#include "UniversalFunctions.hpp"
 #include <chrono>
 #include "PlanetaryMotion.hpp"
 #include <atomic>

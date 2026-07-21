@@ -10,7 +10,6 @@ add_executable(Hephaestus
     src/Entities.hpp
     
     src/PlanetaryBody.hpp
-    src/UniversalFunctions.hpp
     src/Universe.cpp
     src/Universe_init.cpp
     src/Universe_init.hpp
