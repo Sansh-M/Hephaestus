@@ -20,10 +20,14 @@ struct RotationFrame {
 	float R11, R12, R21, R22, R31, R32; // Rotation matrix components
 };
 
-//longitude and lattitude are angles, coordinates can be computed for the global system by multiplying 
-struct PlanetaryCoordinates {
-	double longitude; 
-	double lattitude; 
+/*
+A body-fixed location. Latitude and longitude remain constant while the planet
+rotates; PlanetaryRotation derives the corresponding world-space coordinate.
+*/
+struct PlanetaryCoordinate {
+	double latitudeRadians;
+	double longitudeRadians;
+	double altitudeMeters;
 };
 
 /*
@@ -46,17 +50,7 @@ public:
 	const OrbitParams orbit_params;
 	const RotationFrame rotation_frame;
 	const std::string& getName() const { return name; }
-	const Vec3& getReferenceCoordinateAtEpoch() const {
-		return SurfaceReferenceCoordinateAtEpoch;
-	}
-
-	const Vec3& getReferenceCoordinate() const {
-		return SurfaceReferenceCoordinate;
-	}
-	
-	void setReferenceCoordinate(const Vec3& updated_reference_coordinate) {
-		SurfaceReferenceCoordinate = updated_reference_coordinate;
-	}
+	float getRadius() const { return radius; }
 
 private:
 	std::string name;
@@ -66,10 +60,4 @@ private:
 	float mass;
 	float radius;
 	std::vector<std::string> CSVPATHS;
-	Vec3 SurfaceReferenceCoordinateAtEpoch = { radius, 0.0f, 0.0f };
-	Vec3 SurfaceReferenceCoordinate = {
-		pos.x + radius,
-		pos.y,
-		pos.z
-	};
 };
