@@ -256,7 +256,7 @@ public:
 		const PlanetaryBody& planet,
 		const std::vector<PlanetaryCoordinate>& coordinates,
 		double timeSinceEpochSeconds) const
-	{
+{
 		std::vector<Vec3> worldCoordinates;
 		worldCoordinates.reserve(coordinates.size());
 		const auto& parameters = parametersFor(planet);

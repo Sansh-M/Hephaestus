@@ -3,6 +3,7 @@
 #include "PlanetaryBody.hpp"
 #include "constants.hpp"
 #include <vector>
+#include <algorithm>
 using namespace std;
 using namespace Physics;
 
@@ -17,7 +18,24 @@ public:
 			if (planet.orbit_params.orbitalPeriod == 0.0f) {
 				continue;
 			}
-			updatePosition(planet, t);
+			auto parentObject = std::find_if(
+				planetary_bodies.begin(),
+				planetary_bodies.end(),
+				[&](const PlanetaryBody& candidate) { 
+					return candidate.getName() == planet.parent;
+				}
+			);
+			
+			if (parentObject == planetary_bodies.end()) {
+				throw std::runtime_error(
+					"Could not find parent for " +
+					planet.getName()
+				);
+			}
+			
+			PlanetaryBody& parent = *parentObject;
+			
+			updatePosition(planet, t, parent.getPos());
 
 		}
 	}
@@ -36,7 +54,7 @@ public:
 
 	//*
 	// Function to update coordinate for next timestep for a planetary body. 
-	void updatePosition(PlanetaryBody& planet, float t) {
+	void updatePosition(PlanetaryBody& planet, float t, Vec3 parentPos) {
 
 
 		float n = 2 * PI / planet.orbit_params.orbitalPeriod; // mean motion
@@ -47,11 +65,17 @@ public:
 		float y_Q = planet.orbit_params.semiMajorAxis * sqrt(1.0f - planet.orbit_params.eccentricity * planet.orbit_params.eccentricity) * sin(E); // position in orbital plane
 
 		float x, y, z;
-		x = planet.rotation_frame.R11 * x_P + planet.rotation_frame.R12 * y_Q; //computing the new position for x,y,z
+		//using the rotation frame to tilt the 2D computation for the planet's location in the orbit
+		x = planet.rotation_frame.R11 * x_P + planet.rotation_frame.R12 * y_Q; 
 		y = planet.rotation_frame.R21 * x_P + planet.rotation_frame.R22 * y_Q;
 		z = planet.rotation_frame.R31 * x_P + planet.rotation_frame.R32 * y_Q;
 		std::cout << planet.getName() << " is at (" << x << ", " << y << ", " << z << ")\n";
-		Vec3 newPos = { x, y, z };
+
+		Vec3 newPos = {
+			x + parentPos.x,
+			y + parentPos.y,
+			z + parentPos.z
+		};
 
 		planet.setPos(newPos);
 	}

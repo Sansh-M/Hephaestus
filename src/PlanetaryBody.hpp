@@ -35,8 +35,8 @@ Class used to define planetary bodies.
 */
 class PlanetaryBody {
 public:
-	PlanetaryBody(std::string name, const Vec3& origin, Vec3& pos, double planetRotation, float mass, float radius, std::vector<std::string> CSVPATHS, OrbitParams orbit_params, RotationFrame rotation_frame)
-		: name(name), origin(origin), pos(pos), planetRotation(planetRotation), mass(mass), radius(radius), CSVPATHS(CSVPATHS), orbit_params(orbit_params), rotation_frame(rotation_frame) {
+	PlanetaryBody(std::string name, const Vec3& origin, Vec3& pos, double planetRotation, float mass, float radius, std::vector<std::string> CSVPATHS, std::string parent, OrbitParams orbit_params, RotationFrame rotation_frame)
+		: name(name), origin(origin), pos(pos), planetRotation(planetRotation), mass(mass), radius(radius), CSVPATHS(CSVPATHS), parent(parent), orbit_params(orbit_params), rotation_frame(rotation_frame) {
 	}
 
 	/*
@@ -50,6 +50,7 @@ public:
 	const OrbitParams orbit_params;
 	const RotationFrame rotation_frame;
 	const std::string& getName() const { return name; }
+	const std::string parent;
 	float getRadius() const { return radius; }
 
 private:

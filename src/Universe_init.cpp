@@ -4,6 +4,7 @@
 #include "PlanetaryBody.hpp"
 #include "constants.hpp"
 #include "Universe_init.hpp"
+#include "PlanetaryRotation.hpp"
 
 using json = nlohmann::json;
 const std::string JSONPATH = "src/Data/Universe.json";
@@ -56,10 +57,10 @@ PlanetaryBody Universe_init::BuildPlanetaryBody(const json& p) {
 
 	OrbitParams orbit_params = { 0, 0, 0, 0, 0, 0, 0 }; // Default values for Sun
 	RotationFrame rotation_frame = { 1, 0, 0, 1, 0, 0 }; // Identity matrix for Sun
-
-	
+	std::string parent = "";
 
 	if (name != "Sun") {
+		parent = p.at("parent");
 		float semiMajorAxis = p.at("semiMajorAxis").get<float>();
 		float eccentricity = p.at("eccentricity").get<float>();
 		float orbitalPeriod = p.at("orbitalPeriod").get<float>();
@@ -82,7 +83,7 @@ PlanetaryBody Universe_init::BuildPlanetaryBody(const json& p) {
 	}
 	
 
-	return PlanetaryBody(name, origin, pos, 0.0, mass, radius, CSVPATHS, orbit_params, rotation_frame);
+	return PlanetaryBody(name, origin, pos, 0.0, mass, radius, CSVPATHS, parent, orbit_params, rotation_frame);
 };
 
 
