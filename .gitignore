@@ -361,3 +361,13 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+
+# Unreal engine files to Ignore
+Unreal/HephaestusGame/.vs/
+Unreal/HephaestusGame/Binaries/
+Unreal/HephaestusGame/DerivedDataCache/
+Unreal/HephaestusGame/Intermediate/
+Unreal/HephaestusGame/Saved/
+Unreal/HephaestusGame/*.sln
+Unreal/HephaestusGame/*.slnx
