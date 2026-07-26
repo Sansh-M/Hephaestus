@@ -14,11 +14,19 @@ namespace Physics {
 	constexpr float PI = 3.14159265f;
 	
 }
-struct Vec3 { float x,y,z; 
+struct Vec3 { 
+	
+	float x,y,z; 
 	void add(Vec3 delta) {
 		x += delta.x;
 		y += delta.y;
 		z += delta.z;
+	}
+
+	void sub(Vec3 delta) {
+		x -= delta.x;
+		y -= delta.y;
+		z -= delta.z;
 	}
 
 	void multiply(Vec3 factor) {

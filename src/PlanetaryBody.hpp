@@ -52,6 +52,7 @@ public:
 	const std::string& getName() const { return name; }
 	const std::string parent;
 	float getRadius() const { return radius; }
+	float getMass() const { return mass; }
 
 private:
 	std::string name;
