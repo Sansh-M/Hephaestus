@@ -4,6 +4,7 @@
 #include "PlanetaryMotion.hpp"
 #include <atomic>
 #include <thread>
+#include "constants.hpp"
 
 const std::string JSONPATH = "src/Data/Universe.json";
 PlanetaryMotion motion; 
@@ -27,14 +28,15 @@ int main() {
 
     std::cout << "Building Universe...\n";
     std::vector<PlanetaryBody> planetary_bodies = Universe_init().buildPlanetaryBodies(JSONPATH);
+    SimulationTime t;
 	auto start = std::chrono::steady_clock::now();  
-
 	std::thread inputThread(listenForExit, std::ref(EXIT)); //pass a reference so that the function listenForExit can modify the EXIT variable in the main thread
-
+    t.previous = 0.0f;
     while (!EXIT) {
         auto now = std::chrono::steady_clock::now();
-        float t = std::chrono::duration<float>(now - start).count();
+        t.current = std::chrono::duration<float>(now - start).count();
         motion.updateAll(planetary_bodies, t);
+        t.previous = t.current;
     }
 
 	inputThread.join(); // Wait for the input thread to finish

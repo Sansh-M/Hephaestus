@@ -14,6 +14,15 @@ namespace Physics {
 	constexpr float PI = 3.14159265f;
 	
 }
+
+struct SimulationTime {
+	float current;
+	float previous; 
+	float delta() {
+		return current - previous; 
+	}
+};
+
 struct Vec3 { 
 	
 	float x,y,z; 

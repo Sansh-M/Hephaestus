@@ -13,7 +13,7 @@ using namespace Physics;
 class PlanetaryMotion {
 public:
 
-	void updateAll(std::vector<PlanetaryBody>& planetary_bodies, float t) {
+	void updateAll(std::vector<PlanetaryBody>& planetary_bodies, SimulationTime& t) {
 		for (auto& planet : planetary_bodies) {
 			if (planet.orbit_params.orbitalPeriod == 0.0f) {
 				continue;
@@ -54,11 +54,11 @@ public:
 
 	//*
 	// Function to update coordinate for next timestep for a planetary body. 
-	void updatePosition(PlanetaryBody& planet, float t, Vec3 parentPos) {
+	void updatePosition(PlanetaryBody& planet, SimulationTime& t, Vec3 parentPos) {
 
 
 		float n = 2 * PI / planet.orbit_params.orbitalPeriod; // mean motion
-		float mean_anomaly = planet.orbit_params.meanAnomaly0 + n * t; // mean anomaly at time t
+		float mean_anomaly = planet.orbit_params.meanAnomaly0 + n * t.current; // mean anomaly at time t
 		float E = solveEccentricAnomaly(mean_anomaly, planet.orbit_params.eccentricity); // eccentric anomaly
 
 		float x_P = planet.orbit_params.semiMajorAxis * (cos(E) - planet.orbit_params.eccentricity); // position in orbital plane)
@@ -76,8 +76,14 @@ public:
 			y + parentPos.y,
 			z + parentPos.z
 		};
-
+		
+		Vec3 velocity = {
+			(newPos.x - planet.getPos().x)/t.delta(),		//compute the velocity vector for the planet. 
+			newPos.y - planet.getPos().y/t.delta(),
+			newPos.z - planet.getPos().z/t.delta()
+		};
 		planet.setPos(newPos);
+		planet.setVelocity(velocity);  
 	}
 
 };

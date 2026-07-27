@@ -53,11 +53,14 @@ public:
 	const std::string parent;
 	float getRadius() const { return radius; }
 	float getMass() const { return mass; }
+	Vec3 getVelocity() { return velocity; }
+	Vec3 setVelocity(Vec3 newVelocity) { velocity = newVelocity; }
 
 private:
 	std::string name;
 	Vec3 origin;
 	Vec3 pos; 
+	Vec3 velocity; 
 	double planetRotation;
 	float mass;
 	float radius;
