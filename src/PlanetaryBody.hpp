@@ -42,7 +42,7 @@ public:
 	/*
 	set the position of the planetary body after it has been computed for the next frame. 
 	*/
-	void setPos(Vec3& new_pos) {
+	void setPos(const Vec3& new_pos) {
 		pos = new_pos;
 	}
 
@@ -53,14 +53,14 @@ public:
 	const std::string parent;
 	float getRadius() const { return radius; }
 	float getMass() const { return mass; }
-	Vec3 getVelocity() { return velocity; }
-	Vec3 setVelocity(Vec3 newVelocity) { velocity = newVelocity; }
+	Vec3 getVelocity() const { return velocity; }
+	void setVelocity(const Vec3& newVelocity) { velocity = newVelocity; }
 
 private:
 	std::string name;
 	Vec3 origin;
 	Vec3 pos; 
-	Vec3 velocity; 
+	Vec3 velocity{ 0.0f, 0.0f, 0.0f };
 	double planetRotation;
 	float mass;
 	float radius;

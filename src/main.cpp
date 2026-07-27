@@ -5,9 +5,13 @@
 #include <atomic>
 #include <thread>
 #include "constants.hpp"
+#include "Entities.hpp"
+#include "GravityEffect.hpp"
 
 const std::string JSONPATH = "src/Data/Universe.json";
 PlanetaryMotion motion; 
+GravityEffect grav;
+Entity test_entity({ 1.0e11f, 0.0f, 0.0f }, 1000.0f);
 
 std::atomic<bool> EXIT{ false };
 
@@ -28,6 +32,7 @@ int main() {
 
     std::cout << "Building Universe...\n";
     std::vector<PlanetaryBody> planetary_bodies = Universe_init().buildPlanetaryBodies(JSONPATH);
+
     SimulationTime t;
 	auto start = std::chrono::steady_clock::now();  
 	std::thread inputThread(listenForExit, std::ref(EXIT)); //pass a reference so that the function listenForExit can modify the EXIT variable in the main thread
@@ -36,6 +41,7 @@ int main() {
         auto now = std::chrono::steady_clock::now();
         t.current = std::chrono::duration<float>(now - start).count();
         motion.updateAll(planetary_bodies, t);
+        grav.compute_velocity(test_entity, planetary_bodies, t);
         t.previous = t.current;
     }
 

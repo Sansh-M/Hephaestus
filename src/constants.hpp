@@ -16,9 +16,9 @@ namespace Physics {
 }
 
 struct SimulationTime {
-	float current;
-	float previous; 
-	float delta() {
+	float current{ 0.0f };
+	float previous{ 0.0f };
+	float delta() const {
 		return current - previous; 
 	}
 };

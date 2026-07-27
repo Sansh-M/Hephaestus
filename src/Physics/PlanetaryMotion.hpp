@@ -76,14 +76,19 @@ public:
 			y + parentPos.y,
 			z + parentPos.z
 		};
-		
-		Vec3 velocity = {
-			(newPos.x - planet.getPos().x)/t.delta(),		//compute the velocity vector for the planet. 
-			newPos.y - planet.getPos().y/t.delta(),
-			newPos.z - planet.getPos().z/t.delta()
-		};
+
+		const float delta_time = t.delta();
+		if (delta_time > 0.0f) {
+			const Vec3 previous_position = planet.getPos();
+			const Vec3 velocity = {
+				(newPos.x - previous_position.x) / delta_time,
+				(newPos.y - previous_position.y) / delta_time,
+				(newPos.z - previous_position.z) / delta_time
+			};
+			planet.setVelocity(velocity);
+		}
+
 		planet.setPos(newPos);
-		planet.setVelocity(velocity);  
 	}
 
 };
