@@ -34,14 +34,25 @@ int main() {
     std::vector<PlanetaryBody> planetary_bodies = Universe_init().buildPlanetaryBodies(JSONPATH);
 
     SimulationTime t;
+    motion.updateAll(planetary_bodies, t);
 	auto start = std::chrono::steady_clock::now();  
 	std::thread inputThread(listenForExit, std::ref(EXIT)); //pass a reference so that the function listenForExit can modify the EXIT variable in the main thread
     t.previous = 0.0f;
     while (!EXIT) {
         auto now = std::chrono::steady_clock::now();
         t.current = std::chrono::duration<float>(now - start).count();
+
+        const Vec3 previous_acceleration =
+            grav.totalAccelerationAt(test_entity.get_pos(), planetary_bodies);
+
         motion.updateAll(planetary_bodies, t);
-        grav.compute_velocity(test_entity, planetary_bodies, t);
+        grav.integrateVelocityVerlet(
+            test_entity,
+            planetary_bodies,
+            previous_acceleration,
+            t
+        );
+
         t.previous = t.current;
     }
 

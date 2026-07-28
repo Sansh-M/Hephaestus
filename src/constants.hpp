@@ -49,13 +49,50 @@ struct Vec3 {
 		y /= factor.y;
 		z /= factor.z;
 	}
+
+	Vec3 operator+(const Vec3& other) const {
+		return {
+			x + other.x,
+			y + other.y,
+			z + other.z
+		};
+	}
+
+	Vec3 operator-(const Vec3& other) const {
+		return {
+			x - other.x,
+			y - other.y,
+			z - other.z
+		};
+	}
+
+	Vec3 operator*(float scalar) const {
+		return {
+			x * scalar,
+			y * scalar,
+			z * scalar
+		};
+	}
+
+	Vec3& operator+=(const Vec3& other) {
+		x += other.x;
+		y += other.y;
+		z += other.z;
+		return *this;
+	}
+
+	Vec3& operator*=(float scalar) {
+		x *= scalar;
+		y *= scalar;
+		z *= scalar;
+		return *this;
+	}
 	
 	//function to compute dot product of two vectors
-	Vec3 dot(Vec3 vector1, Vec3 vector2) {
-		x = vector1.x * vector2.x;
-		y = vector1.y * vector2.y;
-		z = vector1.z * vector2.z;
-		return Vec3{ x,y,z };
+	double dot(const Vec3& other) const {
+		return x * other.x +
+			y * other.y +
+			z * other.z;
 	}
 
 	//function to normalize a vector 
