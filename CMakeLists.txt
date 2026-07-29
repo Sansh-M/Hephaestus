@@ -15,7 +15,7 @@ add_executable(Hephaestus
     src/Universe_init.hpp
     src/Physics/atmos_physics.cpp
     src/Physics/PlanetaryMotion.hpp
-)
+ "Unreal/HephaestusGame/OrbitMap/ HephaestusSimulationSubsystem.h" "Unreal/HephaestusGame/OrbitMap/HephaestusSimulationSubsystem.cpp")
 
 target_include_directories(Hephaestus PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/src

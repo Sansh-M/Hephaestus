@@ -11,7 +11,7 @@
 const std::string JSONPATH = "src/Data/Universe.json";
 PlanetaryMotion motion; 
 GravityEffect grav;
-Entity test_entity({ 1.0e11f, 0.0f, 0.0f }, 1000.0f);
+std::vector<PlanetaryBody> planetary_bodies;
 
 std::atomic<bool> EXIT{ false };
 
@@ -25,14 +25,17 @@ void listenForExit(std::atomic<bool>& exitFlag) {
     }
 }
 
+std::vector<PlanetaryBody> getPlanetaryBodies() {
+    return planetary_bodies;
+}
+
 int main() {
     std::cout << "Physics Engine starting...\n";
     
     //main engine loop 
-
+    Entity test_entity({ 1.0e11f, 0.0f, 0.0f }, 1000.0f);
     std::cout << "Building Universe...\n";
-    std::vector<PlanetaryBody> planetary_bodies = Universe_init().buildPlanetaryBodies(JSONPATH);
-
+    planetary_bodies = Universe_init().buildPlanetaryBodies(JSONPATH);
     SimulationTime t;
     motion.updateAll(planetary_bodies, t);
 	auto start = std::chrono::steady_clock::now();  

@@ -22,6 +22,7 @@ public:
 	float get_mass() const { return mass; }
 	void set_velocity(const Vec3& vel) { Velocity = vel; }
 	Vec3 get_velocity() const { return Velocity; }
+	const std::string name;
 private:
 	Vec3 pos;
 	Vec3 Velocity;
