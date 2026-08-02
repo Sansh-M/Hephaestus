@@ -1,20 +1,13 @@
 #include <iostream>
 #include "Universe_init.hpp"
 #include <chrono>
-#include "PlanetaryMotion.hpp"
 #include <atomic>
 #include <thread>
 #include "constants.hpp"
 #include "Entities.hpp"
-#include "GravityEffect.hpp"
 #include "Universe.hpp"
 
 const std::string JSONPATH = "src/Data/Universe.json";
-PlanetaryMotion motion; 
-GravityEffect grav;
-std::vector<PlanetaryBody> planetary_bodies;
-SimulationTime t;
-Universe universe(Universe_init().buildPlanetaryBodies(JSONPATH));   //build the universe object using the json file.
 
 std::atomic<bool> EXIT{ false };
 
@@ -33,8 +26,20 @@ int main() {
     std::cout << "Physics Engine starting...\n";
     
     //main engine loop 
-    Entity test_entity({ 1.0e11f, 0.0f, 0.0f }, 1000.0f);
+
+    SimulationTime t;
+
     std::cout << "Building Universe...\n";
+
+	Universe universe{
+		Universe_init().buildPlanetaryBodies(JSONPATH)
+	};
+	// Add a runtime entity to the collection owned and updated by Universe.
+	universe.addEntity(Entity("test_entity", { 1.0e11f, 0.0f, 0.0f }, 1000.0f));
+
+	// Establish planetary positions at the initial epoch before sampling gravity.
+	universe.advance(t);
+
 	auto start = std::chrono::steady_clock::now();  
 	std::thread inputThread(listenForExit, std::ref(EXIT)); //pass a reference so that the function listenForExit can modify the EXIT variable in the main thread
     t.previous = 0.0f;
@@ -42,18 +47,8 @@ int main() {
     while (!EXIT) {
         auto now = std::chrono::steady_clock::now();
         t.current = std::chrono::duration<float>(now - start).count();
-        universe.advance(t);
 
-        const Vec3 previous_acceleration =
-            grav.totalAccelerationAt(test_entity.get_pos(), planetary_bodies);
-
-        grav.integrateVelocityVerlet(
-            test_entity,
-            planetary_bodies,
-            previous_acceleration,
-            t
-        );
-
+		universe.advance(t);
         t.previous = t.current;
     }
 

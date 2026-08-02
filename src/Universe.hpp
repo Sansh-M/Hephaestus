@@ -1,19 +1,17 @@
-#include <iostream>
+#pragma once
+
+#include <string_view>
+#include <vector>
+
 #include "PlanetaryBody.hpp"
 #include "Entities.hpp"
 #include "PlanetaryMotion.hpp"
 #include "constants.hpp"
-#include "Universe_init.hpp"
-#include <chrono>
-#include <atomic>
-#include <thread>
 #include "GravityEffect.hpp"
-
 
 class Universe final {
 public:
-	Universe() = default;
-	
+	// A Universe must be constructed with the planets it will own.
 	explicit Universe(std::vector<PlanetaryBody> planets);
 
 	void advance(SimulationTime& time);
@@ -24,13 +22,15 @@ public:
 	const PlanetaryBody* findPlanet(std::string_view id) const noexcept;
 
 	void addEntity(const Entity& entity) {
-		Entities_.push_back(entity);
+		entities_.push_back(entity);
 	}
 
 
 private:
+	// These collections have one owner; outside systems receive const views.
 	std::vector<PlanetaryBody> planets_;
-	std::vector<Entity> Entities_;
+	std::vector<Entity> entities_;
 	PlanetaryMotion planetaryMotion_;
+	GravityEffect gravityEffect_;
 };
 

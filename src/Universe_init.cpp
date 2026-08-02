@@ -5,7 +5,6 @@
 #include "constants.hpp"
 #include "Universe_init.hpp"
 #include "PlanetaryRotation.hpp"
-#include "Entities.hpp"
 
 using json = nlohmann::json;
 const std::string JSONPATH = "src/Data/Universe.json";
@@ -86,13 +85,4 @@ PlanetaryBody Universe_init::BuildPlanetaryBody(const json& p) {
 
 	return PlanetaryBody(name, origin, pos, 0.0, mass, radius, CSVPATHS, parent, orbit_params, rotation_frame);
 };
-
-/*
-Build Entity objects
-*/
-std::vector<Entity> buildEntityList() {
-
-}
-
-
 
