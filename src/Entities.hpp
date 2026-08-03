@@ -36,3 +36,37 @@ private:
 
 };
 
+/*
+Substitute for int placeholder to simulate the aerosurface of an entity to compute the roll, pitch and yaw during atmospheric reentry
+*/
+struct AeroCoefficients {
+	double axial;   // CA
+	double side;    // CY
+	double normal;  // CN
+
+	double roll;    // Cl
+	double pitch;   // Cm
+	double yaw;     // Cn
+};
+
+struct AeroCoefficientPoint {
+	double mach;
+	double angleOfAttackRadians;
+	double sideslipRadians;
+	double knudsenNumber;
+	AeroCoefficients coefficients;
+};
+
+struct CoefficientAeroDefinition {
+	double referenceAreaM2;
+	double referenceLengthM;
+
+	// Point about which the stored moment coefficients were calculated.
+	Vec3 momentReferenceBodyM;
+
+	// Needed by a first-order stagnation-point heating model.
+	double noseRadiusM;
+
+	std::vector<AeroCoefficientPoint> table;
+};
+
