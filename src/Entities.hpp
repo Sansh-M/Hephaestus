@@ -2,7 +2,7 @@
 
 #include <string>
 #include <utility>
-
+#include <vector>
 #include "constants.hpp"
 
 /*
@@ -10,14 +10,15 @@ Entity class where Entity can beanything
 */
 class Entity {
 public:
-	Entity(std::string entity_name, const Vec3& initial_position, float entity_mass)
+	Entity(std::string entity_name, const Vec3& initial_position, float entity_mass, std::vector<thrustSource> thrust_sources)
 		// Entity identity is supplied once when the object is created.
 		: name(std::move(entity_name)),
 		  pos(initial_position),
 		  Velocity{ 0.0f, 0.0f, 0.0f },
 		  origin(initial_position),
 		  mass(entity_mass),
-		  aerosurface(0) {
+		  aerosurface(0),
+		  thrust_sources(std::move(thrust_sources)) {
 	}
 	//entity member function definitions
 	const std::string& get_name() const { return name; }
@@ -26,7 +27,10 @@ public:
 	float get_mass() const { return mass; }
 	void set_velocity(const Vec3& vel) { Velocity = vel; }
 	Vec3 get_velocity() const { return Velocity; }
+	std::vector<thrustSource> get_thrust_sources() const { return thrust_sources; }
+	void set_thrust_sources(const std::vector<thrustSource>& sources) { thrust_sources = sources; }
 private:
+	std::vector<thrustSource> thrust_sources;
 	std::string name;
 	Vec3 pos;
 	Vec3 Velocity;
@@ -70,3 +74,9 @@ struct CoefficientAeroDefinition {
 	std::vector<AeroCoefficientPoint> table;
 };
 
+struct thrustSource {
+	int thruster_type; //defines what type of engine is used, thruster, RCS, etc. thruster_type=0 (rocket engine), thruster_type=1 (RCS thruster)
+	float thrust; // defined how much thrust is produced by each engine
+	Vec3 thrustVector; // THIS DEFINES THE VECTOR FROM THE CENTER OF TEH ENTITY TO THE POINT WHERE THE THRUST IS APPLIED. 
+	Vec3 defaultOrientation; //defines the orientation of the engine relative to point where it is connected, default value is orientationo defined at time of launch. 
+};
