@@ -18,4 +18,8 @@ class RocketPhysics {
 
 	}
 
+	Vec3 RCSAcceleration(const Vec3& planetary_acceleration, Entity entity, Vec3 thrust_vector) {
+
+	}
+
 };
